@@ -1,0 +1,68 @@
+:root {
+  color-scheme: light;
+  font-family:
+    'Avenir Next',
+    'Helvetica Neue',
+    'Segoe UI',
+    sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #f6f3ee;
+  background: #fbfaf7;
+  --text-main: #f6f3ee;
+  --text-soft: rgba(246, 243, 238, 0.72);
+  --muted-strong: rgba(246, 243, 238, 0.5);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #fbfaf7;
+}
+
+body,
+button,
+input {
+  font: inherit;
+}
+
+button,
+input {
+  color: inherit;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(3.4rem, 10vw, 7.4rem);
+  line-height: 0.9;
+  letter-spacing: -0.075em;
+}
+
+h2 {
+  font-size: clamp(1.22rem, 3vw, 1.85rem);
+  line-height: 1.1;
+  letter-spacing: -0.045em;
+}
+
+#root {
+  min-height: 100vh;
+}

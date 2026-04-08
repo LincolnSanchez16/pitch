@@ -1,0 +1,42 @@
+.shiny-text {
+  display: inline-block;
+  background-image: linear-gradient(
+    var(--shiny-spread, 120deg),
+    var(--shiny-color, #b5b5b5) 0%,
+    var(--shiny-color, #b5b5b5) 36%,
+    var(--shiny-shine, #ffffff) 50%,
+    var(--shiny-color, #b5b5b5) 64%,
+    var(--shiny-color, #b5b5b5) 100%
+  );
+  background-size: 200% auto;
+  background-position: 150% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation-name: shiny-sweep;
+  animation-duration: var(--shiny-duration, 2s);
+  animation-delay: var(--shiny-delay, 0s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: var(--shiny-direction, normal);
+}
+
+.shiny-text.pause-on-hover:hover {
+  animation-play-state: paused;
+}
+
+.shiny-text.is-disabled {
+  background: none;
+  color: inherit;
+  -webkit-text-fill-color: currentColor;
+}
+
+@keyframes shiny-sweep {
+  from {
+    background-position: 150% center;
+  }
+
+  to {
+    background-position: -50% center;
+  }
+}
