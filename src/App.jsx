@@ -31,9 +31,173 @@ import { resolveRound } from './utils/scoring'
 const DEFAULT_MODE = 'solo'
 const DEFAULT_TRAINER_DIFFICULTY = 'easy'
 const DEFAULT_CUSTOM_CHORD_TYPES = TRAINER_DIFFICULTIES.medium.chordTypeIds
+const ENTRY_OVERLAY_SESSION_KEY = 'pitch-entry-overlay-dismissed'
+const ENTRY_OVERLAY_FADE_MS = 420
+const INSTAGRAM_URL = 'https://www.instagram.com/lincolnaugustsanchez/'
 const CHORD_TYPE_MAP = Object.fromEntries(
   CHORD_TYPES.map((chordType) => [chordType.id, chordType]),
 )
+const LEGAL_DOCUMENTS = {
+  terms: {
+    title: 'Terms of Use',
+    effectiveDate: 'Effective Date: Wednesday, April 8, 2026',
+    intro:
+      'Welcome to Focused Pitch. By accessing or using this website and its features, you agree to these Terms of Use. If you do not agree, please do not use the site.',
+    sections: [
+      {
+        title: '1. Use of the Site',
+        paragraphs: [
+          'Focused Pitch provides audio-based focus and listening tools for personal use. You agree to use the site only for lawful purposes and in a way that does not interfere with the operation of the platform or the experience of other users.',
+        ],
+      },
+      {
+        title: '2. No Medical or Professional Advice',
+        paragraphs: [
+          'Focused Pitch is intended for general wellness, productivity, and listening-based use only. It does not provide medical, psychological, therapeutic, or professional advice. You are responsible for how you use the audio experiences and tools provided on the site.',
+        ],
+      },
+      {
+        title: '3. Audio Use and Personal Responsibility',
+        paragraphs: [
+          'Some features of the site use tones, layered sound, and headphone-based listening experiences. You are responsible for using the platform at safe listening levels and in appropriate environments. Focused Pitch is not responsible for discomfort, distraction, hearing issues, or any consequences resulting from misuse of audio features.',
+        ],
+      },
+      {
+        title: '4. Intellectual Property',
+        paragraphs: [
+          'All content, branding, audio systems, design elements, interface structure, code, and related materials on Focused Pitch are owned by or licensed to Focused Pitch and are protected by applicable intellectual property laws. You may not copy, distribute, modify, reverse engineer, reproduce, or commercially use any part of the site without prior written permission.',
+        ],
+      },
+      {
+        title: '5. User Conduct',
+        intro: 'You agree not to:',
+        bullets: [
+          'misuse the platform',
+          'attempt to disrupt or damage the site',
+          'interfere with security or functionality',
+          'use automated systems to access the site in an unauthorized way',
+          'copy or exploit any part of the platform without permission',
+        ],
+      },
+      {
+        title: '6. Availability',
+        paragraphs: [
+          'We may update, modify, suspend, or discontinue any part of the site at any time, with or without notice. We do not guarantee uninterrupted availability or error-free operation.',
+        ],
+      },
+      {
+        title: '7. Disclaimer',
+        paragraphs: [
+          'Focused Pitch is provided on an “as is” and “as available” basis. We make no guarantees regarding performance, accuracy, availability, or fitness for a particular purpose.',
+        ],
+      },
+      {
+        title: '8. Limitation of Liability',
+        paragraphs: [
+          'To the fullest extent allowed by law, Focused Pitch and its creators will not be liable for any indirect, incidental, special, consequential, or other damages arising from your use of the site, including but not limited to audio misuse, interruptions, data loss, or inability to access the platform.',
+        ],
+      },
+      {
+        title: '9. Changes to These Terms',
+        paragraphs: [
+          'We may update these Terms of Use from time to time. Continued use of the site after changes are posted means you accept the updated terms.',
+        ],
+      },
+      {
+        title: '10. Contact',
+        paragraphs: [
+          'If you have questions about these Terms of Use, please contact us through the appropriate contact method provided on the site.',
+        ],
+      },
+    ],
+  },
+  privacy: {
+    title: 'Privacy Policy',
+    effectiveDate: 'Effective Date: Wednesday, April 8, 2026',
+    intro:
+      'Focused Pitch respects your privacy. This Privacy Policy explains what information we may collect, how we use it, and how we handle it.',
+    sections: [
+      {
+        title: '1. Information We Collect',
+        intro: 'We may collect limited information such as:',
+        bullets: [
+          'basic usage data',
+          'device and browser information',
+          'pages visited and interactions within the site',
+          'analytics data related to site performance and usage',
+        ],
+        paragraphs: [
+          'If you submit information through a contact or feedback form, we may also collect the information you provide directly.',
+        ],
+      },
+      {
+        title: '2. How We Use Information',
+        intro: 'We may use collected information to:',
+        bullets: [
+          'improve the platform',
+          'understand site usage',
+          'monitor feature performance',
+          'respond to inquiries or feedback',
+          'maintain security and stability',
+        ],
+      },
+      {
+        title: '3. Analytics',
+        paragraphs: [
+          'Focused Pitch may use analytics tools, including Vercel Analytics or similar services, to understand how visitors use the site. These tools may collect anonymized or aggregated usage information such as page views, device type, browser information, and general usage behavior.',
+        ],
+      },
+      {
+        title: '4. Cookies and Similar Technologies',
+        paragraphs: [
+          'The site may use basic cookies or similar technologies to support functionality, remember session-level preferences, and improve the user experience. By continuing to use the site, you consent to this basic use.',
+        ],
+      },
+      {
+        title: '5. Sharing of Information',
+        paragraphs: [
+          'We do not sell your personal information. We may share limited information with service providers or infrastructure partners only as needed to operate, maintain, or improve the platform.',
+        ],
+      },
+      {
+        title: '6. Data Security',
+        paragraphs: [
+          'We take reasonable steps to protect information handled through the site. However, no system can guarantee complete security, and use of the platform is at your own risk.',
+        ],
+      },
+      {
+        title: '7. Third-Party Services',
+        paragraphs: [
+          'The site may rely on third-party services for hosting, analytics, audio delivery, or other technical functions. Those services may process limited data in connection with the operation of the site.',
+        ],
+      },
+      {
+        title: '8. Your Choices',
+        paragraphs: [
+          'You may choose not to provide optional information through forms or interactive features. You may also limit certain browser-based tracking through your browser settings where available.',
+        ],
+      },
+      {
+        title: '9. Children’s Privacy',
+        paragraphs: [
+          'Focused Pitch is not intended for children under 13, and we do not knowingly collect personal information from children under 13.',
+        ],
+      },
+      {
+        title: '10. Changes to This Policy',
+        paragraphs: [
+          'We may update this Privacy Policy from time to time. Continued use of the site after changes are posted means you accept the updated policy.',
+        ],
+      },
+      {
+        title: '11. Contact',
+        paragraphs: [
+          'If you have questions about this Privacy Policy, please contact us through the appropriate contact method provided on the site.',
+        ],
+      },
+    ],
+  },
+}
 
 function createInitialGameState() {
   return {
@@ -82,6 +246,15 @@ function createInitialGameState() {
 }
 
 function AppContent() {
+  const [entryOverlayState, setEntryOverlayState] = useState(() => {
+    if (typeof window === 'undefined') {
+      return 'hidden'
+    }
+
+    return window.sessionStorage.getItem(ENTRY_OVERLAY_SESSION_KEY) === 'true'
+      ? 'hidden'
+      : 'visible'
+  })
   const [selectedMode, setSelectedMode] = useState(DEFAULT_MODE)
   const [pendingMode, setPendingMode] = useState(null)
   const [selectedTrainerDifficulty, setSelectedTrainerDifficulty] = useState(
@@ -90,6 +263,7 @@ function AppContent() {
   const [selectedCustomChordTypeIds, setSelectedCustomChordTypeIds] = useState(
     DEFAULT_CUSTOM_CHORD_TYPES,
   )
+  const [legalModal, setLegalModal] = useState(null)
   const [game, setGame] = useState(createInitialGameState)
   const [memoryTimeLeft, setMemoryTimeLeft] = useState(GAME_CONFIG.targetDurationMs / 1000)
 
@@ -169,6 +343,51 @@ function AppContent() {
   }, [game.view, startAmbient, unlockAudio])
 
   useEffect(() => {
+    if (entryOverlayState !== 'exiting') {
+      return undefined
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setEntryOverlayState('hidden')
+    }, ENTRY_OVERLAY_FADE_MS)
+
+    return () => {
+      window.clearTimeout(timeoutId)
+    }
+  }, [entryOverlayState])
+
+  useEffect(() => {
+    if (!legalModal) {
+      return undefined
+    }
+
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        setLegalModal(null)
+      }
+    }
+
+    window.addEventListener('keydown', handleEscape)
+
+    return () => {
+      window.removeEventListener('keydown', handleEscape)
+    }
+  }, [legalModal])
+
+  useEffect(() => {
+    if (!legalModal) {
+      return undefined
+    }
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+    }
+  }, [legalModal])
+
+  useEffect(() => {
     return () => {
       clearQueuedTarget()
       clearMemoryTimers()
@@ -188,6 +407,10 @@ function AppContent() {
       return undefined
     }
 
+    if (entryOverlayState !== 'hidden') {
+      return undefined
+    }
+
     const unlockLandingAudio = async () => {
       await unlockAudio()
       await startAmbient()
@@ -200,7 +423,7 @@ function AppContent() {
       window.removeEventListener('pointerdown', unlockLandingAudio)
       window.removeEventListener('keydown', unlockLandingAudio)
     }
-  }, [audioReady, game.view, startAmbient, stopAmbient, unlockAudio])
+  }, [audioReady, entryOverlayState, game.view, startAmbient, stopAmbient, unlockAudio])
 
   useEffect(() => {
     if (
@@ -376,7 +599,9 @@ function AppContent() {
       roundNumber: 1,
     })
 
-    stopAmbient()
+    stopAmbient({
+      fadeOutMs: 320,
+    })
     stopFocus()
     stopAll()
     clearMemoryTimers()
@@ -401,7 +626,9 @@ function AppContent() {
       customChordTypeIds: pool,
     })
 
-    stopAmbient()
+    stopAmbient({
+      fadeOutMs: 320,
+    })
     stopFocus()
     stopAll()
     clearMemoryTimers()
@@ -422,7 +649,9 @@ function AppContent() {
       roundNumber: 1,
     })
 
-    stopAmbient()
+    stopAmbient({
+      fadeOutMs: 320,
+    })
     stopFocus()
     stopAll()
     clearMemoryTimers()
@@ -437,7 +666,9 @@ function AppContent() {
   }, [clearMemoryTimers, stopAmbient, stopFocus, stopAll])
 
   const beginFocusMode = useCallback(() => {
-    stopAmbient()
+    stopAmbient({
+      fadeOutMs: 320,
+    })
     stopFocus()
     stopAll()
     clearMemoryTimers()
@@ -450,6 +681,17 @@ function AppContent() {
       mode: 'focus',
     })
   }, [clearMemoryTimers, stopAmbient, stopFocus, stopAll])
+
+  const handleEntryOverlayContinue = useCallback(async () => {
+    if (game.view !== 'setup' || entryOverlayState !== 'visible') {
+      return
+    }
+
+    setEntryOverlayState('unlocking')
+    window.sessionStorage.setItem(ENTRY_OVERLAY_SESSION_KEY, 'true')
+    await handleSetupWakeAudio()
+    setEntryOverlayState('exiting')
+  }, [entryOverlayState, game.view, handleSetupWakeAudio])
 
   const handleStartGame = async () => {
     await unlockAudio()
@@ -1056,6 +1298,11 @@ function AppContent() {
   const activePlayerId = game.round?.activePlayer ?? 'p1'
   const activePlayerMeta = PLAYER_META[activePlayerId]
   const activeSelection = game.round?.selections[activePlayerId] ?? GAME_CONFIG.defaultFrequency
+  const showEntryOverlay = game.view === 'setup' && entryOverlayState !== 'hidden'
+
+  useEffect(() => {
+    document.title = 'Pitch'
+  }, [])
 
   useEffect(() => {
     liveSelectionRef.current = activeSelection
@@ -1078,8 +1325,16 @@ function AppContent() {
   return (
     <main
       className="app-shell"
-      onPointerDown={game.view === 'setup' ? () => void handleSetupWakeAudio() : undefined}
-      onKeyDown={game.view === 'setup' ? () => void handleSetupWakeAudio() : undefined}
+      onPointerDown={
+        game.view === 'setup' && !showEntryOverlay
+          ? () => void handleSetupWakeAudio()
+          : undefined
+      }
+      onKeyDown={
+        game.view === 'setup' && !showEntryOverlay
+          ? () => void handleSetupWakeAudio()
+          : undefined
+      }
     >
       <div className="background-field" aria-hidden="true">
         <SoftAurora
@@ -1099,6 +1354,8 @@ function AppContent() {
           mouseInfluence={0.25}
         />
       </div>
+
+      <BrandShell onOpenLegalModal={setLegalModal} />
 
       <section
         className={`game-card view-${game.view}${game.view === 'focus' && game.focusIsPlaying && !game.focusEditing ? ' focus-session-active' : ''}`}
@@ -1419,7 +1676,190 @@ function AppContent() {
           </div>
         </div>
       ) : null}
+
+      {legalModal ? (
+        <LegalModal
+          documentKey={legalModal}
+          onClose={() => setLegalModal(null)}
+        />
+      ) : null}
+
+      {showEntryOverlay ? (
+        <button
+          type="button"
+          className={`entry-overlay ${entryOverlayState === 'exiting' ? 'is-exiting' : ''}`}
+          onClick={() => void handleEntryOverlayContinue()}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault()
+              void handleEntryOverlayContinue()
+            }
+          }}
+          aria-label="Focused Pitch, click anywhere to enable audio"
+        >
+          <span className="entry-overlay-panel">
+            <span className="entry-overlay-title">Focused Pitch</span>
+            <span className="entry-overlay-copy">
+              {entryOverlayState === 'unlocking'
+                ? 'Enabling audio...'
+                : 'Click anywhere to enable audio'}
+            </span>
+          </span>
+        </button>
+      ) : null}
     </main>
+  )
+}
+
+function BrandShell({ onOpenLegalModal = () => {} }) {
+  return (
+    <div className="brand-shell" aria-label="Focused Pitch brand shell">
+      <div className="brand-shell-row">
+        <span className="brand-shell-copy brand-shell-domain">focusedpitch.com</span>
+
+        <a
+          className="brand-shell-icon-link"
+          href={INSTAGRAM_URL}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Focused Pitch on Instagram"
+        >
+          <InstagramIcon />
+        </a>
+      </div>
+
+      <div className="brand-shell-row is-bottom">
+        <nav className="brand-shell-links" aria-label="Legal links">
+          <button
+            type="button"
+            className="brand-shell-copy brand-shell-link brand-shell-link-button"
+            onClick={() => onOpenLegalModal('terms')}
+          >
+            Terms
+          </button>
+          <button
+            type="button"
+            className="brand-shell-copy brand-shell-link brand-shell-link-button"
+            onClick={() => onOpenLegalModal('privacy')}
+          >
+            Privacy
+          </button>
+        </nav>
+
+        <p className="brand-shell-copy brand-shell-meta">
+          All rights reserved | Proprietary Audio System
+        </p>
+      </div>
+    </div>
+  )
+}
+
+function LegalModal({ documentKey, onClose }) {
+  const document = LEGAL_DOCUMENTS[documentKey]
+
+  if (!document) {
+    return null
+  }
+
+  return (
+    <div
+      className="modal-backdrop legal-modal-backdrop"
+      role="presentation"
+      onClick={onClose}
+    >
+      <section
+        className="legal-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="legal-modal-title"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="legal-modal-header">
+          <div className="legal-modal-heading">
+            <p className="confirm-label">Focused Pitch</p>
+            <h2 id="legal-modal-title">{document.title}</h2>
+            <p className="legal-modal-effective-date">{document.effectiveDate}</p>
+          </div>
+
+          <button
+            type="button"
+            className="legal-modal-close"
+            onClick={onClose}
+            aria-label={`Close ${document.title}`}
+          >
+            <CloseIcon />
+          </button>
+        </div>
+
+        <div className="legal-modal-body">
+          <p className="legal-modal-intro">{document.intro}</p>
+
+          {document.sections.map((section) => (
+            <section key={section.title} className="legal-modal-section">
+              <h3>{section.title}</h3>
+              {section.intro ? <p>{section.intro}</p> : null}
+              {section.paragraphs?.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+              {section.bullets ? (
+                <ul className="legal-modal-list">
+                  {section.bullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              ) : null}
+            </section>
+          ))}
+        </div>
+      </section>
+    </div>
+  )
+}
+
+function InstagramIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="brand-shell-icon" aria-hidden="true">
+      <rect
+        x="3.75"
+        y="3.75"
+        width="16.5"
+        height="16.5"
+        rx="4.25"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.65"
+      />
+      <circle
+        cx="12"
+        cy="12"
+        r="3.85"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.65"
+      />
+      <circle cx="17.2" cy="6.9" r="1.15" fill="currentColor" />
+    </svg>
+  )
+}
+
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="legal-modal-close-icon" aria-hidden="true">
+      <path
+        d="M6 6 18 18"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.8"
+      />
+      <path
+        d="M18 6 6 18"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.8"
+      />
+    </svg>
   )
 }
 
@@ -1447,6 +1887,7 @@ class AppErrorBoundary extends Component {
     if (this.state.hasError) {
       return (
         <main className="app-shell">
+          <BrandShell />
           <section className="game-card">
             <header className="hero-bar">
               <h1 className="brand-mark">pitch</h1>

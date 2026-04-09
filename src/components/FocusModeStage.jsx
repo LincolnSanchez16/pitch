@@ -16,7 +16,14 @@ export function FocusModeStage({
   onEndSession,
   onHome,
 }) {
-  const formattedElapsed = formatStopwatch(elapsedMs)
+  const totalSeconds = Math.max(0, Math.floor(elapsedMs / 1000))
+  const formattedElapsed = formatStopwatch(totalSeconds)
+  const previousFormattedElapsed = formatStopwatch(Math.max(0, totalSeconds - 1))
+  const stopwatchDigits = createStopwatchDigits(
+    formattedElapsed,
+    previousFormattedElapsed,
+    totalSeconds,
+  )
   const isSetupView = !isPlaying || isEditing
 
   return (
@@ -118,15 +125,43 @@ export function FocusModeStage({
               onClick={() => onTogglePanel(!panelOpen)}
               aria-expanded={panelOpen}
             >
-              <span className="focus-stopwatch-label">time spent</span>
-              <strong key={formattedElapsed} className="focus-stopwatch-value">
-                {formattedElapsed}
+              <span className="focus-stopwatch-label">time focused</span>
+              <strong className="focus-stopwatch-value" aria-label={formattedElapsed}>
+                {stopwatchDigits.map((digit) => (
+                  <FragmentWithSeparator
+                    key={digit.key}
+                    digit={digit}
+                  />
+                ))}
               </strong>
             </button>
           </div>
         </div>
       </section>
     )
+  )
+}
+
+function FragmentWithSeparator({ digit }) {
+  if (digit.type === 'separator') {
+    return <span className="focus-stopwatch-separator">:</span>
+  }
+
+  return (
+    <>
+      <RollingDigit digit={digit} />
+    </>
+  )
+}
+
+function RollingDigit({ digit }) {
+  return (
+    <span className="focus-stopwatch-digit" aria-hidden="true">
+      <span className={`focus-stopwatch-digit-track ${digit.changed ? 'is-rolling' : ''}`}>
+        <span>{digit.previous}</span>
+        <span>{digit.current}</span>
+      </span>
+    </span>
   )
 }
 
@@ -146,11 +181,34 @@ function VolumeRow({ label, value, onChange, disabled = false }) {
   )
 }
 
-function formatStopwatch(ms) {
-  const totalSeconds = Math.max(0, Math.floor(ms / 1000))
+function formatStopwatch(totalSeconds) {
   const hours = Math.floor(totalSeconds / 3600)
   const minutes = Math.floor((totalSeconds % 3600) / 60)
   const seconds = totalSeconds % 60
 
   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+}
+
+function createStopwatchDigits(currentFormatted, previousFormatted, totalSeconds) {
+  return currentFormatted.split('').map((character, index) => {
+    if (character === ':') {
+      return {
+        id: `separator-${index}`,
+        key: `separator-${index}`,
+        type: 'separator',
+      }
+    }
+
+    const previous = previousFormatted[index] ?? character
+    const changed = totalSeconds > 0 && previous !== character
+
+    return {
+      id: `digit-${index}`,
+      type: 'digit',
+      key: changed ? `digit-${index}-${previous}-${character}` : `digit-${index}`,
+      changed,
+      current: character,
+      previous,
+    }
+  })
 }

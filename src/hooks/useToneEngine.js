@@ -70,6 +70,8 @@ function createPolySynth(output, options = {}) {
 
 export function useToneEngine() {
   const ambientRef = useRef(null)
+  const ambientRequestRef = useRef(0)
+  const ambientDisposeTimeoutRef = useRef(null)
   const previewRef = useRef(null)
   const targetRef = useRef(null)
   const chordRef = useRef(null)
@@ -201,40 +203,56 @@ export function useToneEngine() {
     stopNote()
   }, [disposeTarget, stopChord, stopNote, stopPreview])
 
-  const stopAmbient = useCallback(() => {
+  const disposeAmbientSession = useCallback((ambientSession) => {
+    ambientSession.padSynth.dispose()
+    ambientSession.bassSynth.dispose()
+    ambientSession.shimmerSynth.dispose()
+    ambientSession.subSynth.dispose()
+    ambientSession.padFilter.dispose()
+    ambientSession.bassFilter.dispose()
+    ambientSession.shimmerFilter.dispose()
+    ambientSession.masterFilter.dispose()
+    ambientSession.padGain.dispose()
+    ambientSession.bassGain.dispose()
+    ambientSession.shimmerGain.dispose()
+    ambientSession.subGain.dispose()
+    ambientSession.subFilter.dispose()
+    ambientSession.padMotion.dispose()
+    ambientSession.shimmerMotion.dispose()
+    ambientSession.chorus.dispose()
+    ambientSession.reverb.dispose()
+    ambientSession.gain.dispose()
+  }, [])
+
+  const stopAmbient = useCallback((options = {}) => {
+    ambientRequestRef.current += 1
+
+    if (ambientDisposeTimeoutRef.current) {
+      window.clearTimeout(ambientDisposeTimeoutRef.current)
+      ambientDisposeTimeoutRef.current = null
+    }
+
     if (!ambientRef.current) {
       return
     }
 
     const ambientSession = ambientRef.current
+    const fadeOutMs = Math.max(0, options.fadeOutMs ?? 320)
+    const fadeOutSeconds = fadeOutMs / 1000
+
     ambientSession.timeouts.forEach((timeoutId) => window.clearTimeout(timeoutId))
+    ambientSession.gain.gain.rampTo(0, fadeOutSeconds)
     ambientSession.padSynth.releaseAll()
     ambientSession.bassSynth.releaseAll()
     ambientSession.shimmerSynth.releaseAll()
     ambientSession.subSynth.releaseAll()
     ambientRef.current = null
 
-    window.setTimeout(() => {
-      ambientSession.padSynth.dispose()
-      ambientSession.bassSynth.dispose()
-      ambientSession.shimmerSynth.dispose()
-      ambientSession.subSynth.dispose()
-      ambientSession.padFilter.dispose()
-      ambientSession.bassFilter.dispose()
-      ambientSession.shimmerFilter.dispose()
-      ambientSession.masterFilter.dispose()
-      ambientSession.padGain.dispose()
-      ambientSession.bassGain.dispose()
-      ambientSession.shimmerGain.dispose()
-      ambientSession.subGain.dispose()
-      ambientSession.subFilter.dispose()
-      ambientSession.padMotion.dispose()
-      ambientSession.shimmerMotion.dispose()
-      ambientSession.chorus.dispose()
-      ambientSession.reverb.dispose()
-      ambientSession.gain.dispose()
-    }, 320)
-  }, [])
+    ambientDisposeTimeoutRef.current = window.setTimeout(() => {
+      disposeAmbientSession(ambientSession)
+      ambientDisposeTimeoutRef.current = null
+    }, fadeOutMs + 120)
+  }, [disposeAmbientSession])
 
   const stopFocus = useCallback(() => {
     if (!focusRef.current) {
@@ -301,6 +319,9 @@ export function useToneEngine() {
       return
     }
 
+    const requestId = ambientRequestRef.current + 1
+    ambientRequestRef.current = requestId
+
     const gain = new Tone.Gain(0.72).toDestination()
     const masterFilter = new Tone.Filter({
       type: 'lowpass',
@@ -322,6 +343,14 @@ export function useToneEngine() {
       preDelay: 0.06,
     }).connect(chorus)
     await waitForReverbReady(reverb)
+
+    if (ambientRequestRef.current !== requestId) {
+      masterFilter.dispose()
+      chorus.dispose()
+      reverb.dispose()
+      gain.dispose()
+      return
+    }
 
     const padGain = new Tone.Gain(0.94)
     const padFilter = new Tone.Filter({
