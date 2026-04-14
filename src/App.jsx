@@ -1388,7 +1388,7 @@ function AppContent() {
                 <button
                   key={mode}
                   type="button"
-                  className={`mode-orb ${pendingMode === mode ? 'is-selected' : ''}`}
+                  className={`mode-orb ${pendingMode === mode ? 'is-selected' : ''} ${mode === 'focus' ? 'is-featured' : ''}`}
                   onClick={() => {
                     void handleSetupWakeAudio()
                     setSelectedMode(mode)

@@ -403,6 +403,54 @@
   color: var(--text-main);
 }
 
+@media (min-width: 769px) {
+  .setup-stage {
+    justify-content: center;
+  }
+
+  .mode-grid {
+    grid-template-columns: repeat(2, minmax(0, 108px));
+    justify-content: center;
+    column-gap: 20px;
+    row-gap: 18px;
+    max-width: 236px;
+    margin-inline: auto;
+  }
+
+  .mode-orb {
+    width: 108px;
+    gap: 6px;
+  }
+
+  .mode-orb-core {
+    width: 86px;
+    height: 86px;
+  }
+
+  .mode-orb.is-featured {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 122px;
+    gap: 7px;
+  }
+
+  .mode-orb.is-featured .mode-orb-core {
+    width: 96px;
+    height: 96px;
+    background: #faf7f1;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.72),
+      0 16px 28px rgba(0, 0, 0, 0.18),
+      0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+
+  .mode-orb.is-featured .mode-label {
+    font-size: 0.9rem;
+    font-weight: 750;
+    letter-spacing: -0.025em;
+  }
+}
+
 .setup-actions,
 .control-strip,
 .result-summary {
@@ -1839,5 +1887,368 @@
 @media (max-width: 900px) {
   .focus-shell .trainer-title {
     white-space: normal;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-shell {
+    min-height: 100svh;
+    align-items: flex-start;
+    justify-content: center;
+    padding:
+      calc(env(safe-area-inset-top, 0px) + 52px)
+      10px
+      calc(env(safe-area-inset-bottom, 0px) + 120px);
+  }
+
+  .app-shell:has(.game-card.view-focus.focus-session-active) {
+    align-items: center;
+  }
+
+  .brand-shell {
+    inset:
+      calc(env(safe-area-inset-top, 0px) + 14px)
+      14px
+      calc(env(safe-area-inset-bottom, 0px) + 12px);
+  }
+
+  .brand-shell-row {
+    gap: 12px;
+  }
+
+  .brand-shell-row.is-bottom {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .brand-shell-copy,
+  .brand-shell-link,
+  .brand-shell-link-button {
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+  }
+
+  .brand-shell-meta {
+    max-width: 14rem;
+    text-align: left;
+  }
+
+  .game-card {
+    width: min(100%, calc(100vw - 20px));
+    min-height: auto;
+    padding: 24px 20px;
+    border-radius: 28px;
+  }
+
+  .view-setup.game-card {
+    min-height: clamp(560px, 72svh, 700px);
+  }
+
+  .game-card.view-guessing,
+  .game-card.view-roundResult,
+  .game-card.view-trainer,
+  .game-card.view-trainerResult,
+  .game-card.view-noteTrainer,
+  .game-card.view-noteTrainerResult {
+    width: min(100%, calc(100vw - 20px));
+    min-height: clamp(560px, 72svh, 720px);
+    max-height: none;
+  }
+
+  .game-card.view-focus {
+    width: min(100%, calc(100vw - 20px));
+    min-height: auto;
+    max-height: calc(100svh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 144px);
+    border-radius: 30px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  .game-card.view-focus.focus-session-active {
+    width: min(100%, calc(100vw - 28px));
+    min-height: 174px;
+    max-height: none;
+    border-radius: 28px;
+    align-self: center;
+  }
+
+  .view-setup {
+    align-content: start;
+    gap: 24px;
+  }
+
+  .view-setup .hero-bar {
+    padding-top: 8px;
+  }
+
+  .setup-stage {
+    min-height: auto;
+    align-items: flex-start;
+    padding-bottom: 4px;
+  }
+
+  .mode-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: center;
+    column-gap: 10px;
+    row-gap: 10px;
+    max-width: none;
+  }
+
+  .mode-orb {
+    width: 100%;
+    max-width: 128px;
+    gap: 5px;
+  }
+
+  .mode-orb-core {
+    width: 72px;
+    height: 72px;
+  }
+
+  .mode-label {
+    font-size: 0.78rem;
+  }
+
+  .primary-button,
+  .secondary-button,
+  .ghost-button,
+  .accent-button {
+    min-height: 52px;
+    padding: 14px 20px;
+  }
+
+  .trainer-shell {
+    min-height: auto;
+    padding: 82px 18px 20px;
+  }
+
+  .trainer-body,
+  .focus-canvas {
+    min-height: auto;
+    align-content: start;
+  }
+
+  .trainer-actions,
+  .setup-actions,
+  .control-strip,
+  .result-summary {
+    gap: 10px;
+  }
+
+  .focus-shell .trainer-title {
+    font-size: clamp(1.82rem, 7.4vw, 2.6rem);
+  }
+
+  .focus-shell {
+    min-height: auto;
+    overflow: visible;
+  }
+
+  .focus-canvas {
+    gap: 18px;
+    padding-bottom: 4px;
+  }
+
+  .focus-group {
+    gap: 9px;
+  }
+
+  .focus-effects-grid,
+  .focus-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .focus-slider-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 6px 0;
+  }
+
+  .focus-slider-row input[type="range"] {
+    height: 8px;
+  }
+
+  .focus-slider-row input[type="range"]::-webkit-slider-thumb {
+    width: 22px;
+    height: 22px;
+  }
+
+  .focus-slider-row input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+  }
+
+  .focus-actions {
+    justify-content: stretch;
+  }
+
+  .focus-actions.is-setup,
+  .focus-session-modal .focus-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .focus-toggle,
+  .trainer-replay,
+  .focus-session-modal .focus-actions .trainer-replay,
+  .focus-session-modal .focus-actions .focus-toggle {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .trainer-pill,
+  .trainer-chip {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .focus-session-shell {
+    overflow: visible;
+  }
+
+  .focus-session {
+    min-height: 174px;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+  }
+
+  .focus-stopwatch-shell {
+    width: 100%;
+  }
+
+  .focus-stopwatch {
+    min-height: 142px;
+    padding: 22px 18px;
+    border-radius: 28px;
+  }
+
+  .focus-stopwatch strong {
+    font-size: clamp(2.7rem, 13vw, 4.5rem);
+  }
+
+  .focus-stopwatch-label {
+    font-size: 0.7rem;
+  }
+
+  .modal-backdrop {
+    padding: 16px;
+  }
+
+  .confirm-modal,
+  .focus-session-modal,
+  .legal-modal {
+    width: min(100%, calc(100vw - 24px));
+  }
+
+  .legal-modal {
+    max-height: calc(100svh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 28px);
+  }
+}
+
+@media (max-width: 480px) {
+  .app-shell {
+    padding:
+      calc(env(safe-area-inset-top, 0px) + 48px)
+      8px
+      calc(env(safe-area-inset-bottom, 0px) + 120px);
+  }
+
+  .brand-shell {
+    inset:
+      calc(env(safe-area-inset-top, 0px) + 12px)
+      12px
+      calc(env(safe-area-inset-bottom, 0px) + 10px);
+  }
+
+  .brand-shell-row {
+    gap: 10px;
+  }
+
+  .brand-shell-copy,
+  .brand-shell-link,
+  .brand-shell-link-button {
+    font-size: 0.64rem;
+  }
+
+  .brand-shell-links {
+    gap: 12px;
+  }
+
+  .brand-shell-meta {
+    max-width: 12rem;
+  }
+
+  .game-card,
+  .game-card.view-guessing,
+  .game-card.view-roundResult,
+  .game-card.view-trainer,
+  .game-card.view-trainerResult,
+  .game-card.view-noteTrainer,
+  .game-card.view-noteTrainerResult,
+  .game-card.view-focus,
+  .game-card.view-focus.focus-session-active {
+    width: min(100%, calc(100vw - 16px));
+    border-radius: 24px;
+  }
+
+  .game-card.view-focus {
+    max-height: calc(100svh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 132px);
+  }
+
+  .trainer-shell {
+    padding: 78px 16px 18px;
+  }
+
+  .focus-shell .trainer-title {
+    font-size: clamp(1.64rem, 8.6vw, 2.2rem);
+  }
+
+  .mode-grid {
+    column-gap: 8px;
+    row-gap: 8px;
+  }
+
+  .mode-orb {
+    max-width: none;
+    gap: 4px;
+  }
+
+  .mode-orb-core {
+    width: 68px;
+    height: 68px;
+  }
+
+  .mode-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .mode-label {
+    font-size: 0.75rem;
+  }
+
+  .focus-effects-grid,
+  .focus-metrics,
+  .focus-actions.is-setup,
+  .focus-session-modal .focus-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .focus-stopwatch {
+    min-height: 136px;
+    padding-inline: 16px;
+  }
+
+  .focus-stopwatch strong {
+    font-size: clamp(2.45rem, 12.4vw, 3.8rem);
   }
 }
